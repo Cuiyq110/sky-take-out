@@ -1,21 +1,22 @@
 package com.sky.controller.admin;
 
 import com.sky.constant.JwtClaimsConstant;
+import com.sky.dto.EmployeeDTO;
 import com.sky.dto.EmployeeLoginDTO;
+import com.sky.dto.EmployeePageQueryDTO;
 import com.sky.entity.Employee;
 import com.sky.properties.JwtProperties;
+import com.sky.result.PageResult;
 import com.sky.result.Result;
 import com.sky.service.EmployeeService;
 import com.sky.utils.JwtUtil;
 import com.sky.vo.EmployeeLoginVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.Generated;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -34,6 +35,17 @@ public class EmployeeController {
     @Autowired
     private JwtProperties jwtProperties;
 
+    @ApiOperation("员工分页查询")
+    @GetMapping("/page")
+    public Result<PageResult> page(EmployeePageQueryDTO employeePageQueryDTO) {
+        log.info("分页查询，页码：{}，页大小：{}，姓名：{}", employeePageQueryDTO.getPage(),
+                employeePageQueryDTO.getPageSize(), employeePageQueryDTO.getName());
+
+        //构造分页构造器
+        PageResult pageResult = employeeService.pageQuery(employeePageQueryDTO);
+
+        return Result.success(pageResult);
+    }
 
     @PostMapping
     @ApiOperation("新增员工")
@@ -52,14 +64,13 @@ public class EmployeeController {
      * @param employeeLoginDTO
      * @return
      */
-    @ApiOperation( "员工登录时传递的数据模型")
+    @ApiOperation("员工登录时传递的数据模型")
     @PostMapping("/login")
     public Result<EmployeeLoginVO> login(@RequestBody EmployeeLoginDTO employeeLoginDTO) {
         log.info("员工登录：{}", employeeLoginDTO);
 
         Employee employee = employeeService.login(employeeLoginDTO);
 
-//      todo 强制校验登录
         //登录成功后，生成jwt令牌
         Map<String, Object> claims = new HashMap<>();
         claims.put(JwtClaimsConstant.EMP_ID, employee.getId());
@@ -75,6 +86,7 @@ public class EmployeeController {
                 .name(employee.getName())
                 .token(token)
                 .build();
+        log.info("登录成功：{}", employeeLoginVO);
         return Result.success(employeeLoginVO);
     }
 
