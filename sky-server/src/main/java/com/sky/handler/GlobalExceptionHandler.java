@@ -30,7 +30,7 @@ public class GlobalExceptionHandler {
                         String entryWithQuotes = parts[i + 1];
                         // 去掉引号
                         String replace = entryWithQuotes.replace("'", "");
-                        return Result.error(MessageConstant.ALREADY_EXISTS + "：" + replace);
+                        return Result.error(replace + MessageConstant.ALREADY_EXISTS );
                     }
                 }
             }
