@@ -8,6 +8,8 @@ import com.sky.result.Result;
 import com.sky.service.EmployeeService;
 import com.sky.utils.JwtUtil;
 import com.sky.vo.EmployeeLoginVO;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,6 +26,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/admin/employee")
 @Slf4j
+@Api(tags = "员工相关接口")
 public class EmployeeController {
 
     @Autowired
@@ -31,18 +34,32 @@ public class EmployeeController {
     @Autowired
     private JwtProperties jwtProperties;
 
+
+    @PostMapping
+    @ApiOperation("新增员工")
+    public Result<String> save(@RequestBody Employee employee) {
+        log.info("新增员工：{}", employee);
+
+//        employeeService.save(employee);
+        employeeService.save(employee);
+
+        return Result.success();
+    }
+
     /**
      * 登录
      *
      * @param employeeLoginDTO
      * @return
      */
+    @ApiOperation( "员工登录时传递的数据模型")
     @PostMapping("/login")
     public Result<EmployeeLoginVO> login(@RequestBody EmployeeLoginDTO employeeLoginDTO) {
         log.info("员工登录：{}", employeeLoginDTO);
 
         Employee employee = employeeService.login(employeeLoginDTO);
 
+//      todo 强制校验登录
         //登录成功后，生成jwt令牌
         Map<String, Object> claims = new HashMap<>();
         claims.put(JwtClaimsConstant.EMP_ID, employee.getId());
@@ -50,6 +67,7 @@ public class EmployeeController {
                 jwtProperties.getAdminSecretKey(),
                 jwtProperties.getAdminTtl(),
                 claims);
+        log.info("jwt令牌生成的令牌:{}", token);
 
         EmployeeLoginVO employeeLoginVO = EmployeeLoginVO.builder()
                 .id(employee.getId())
@@ -57,7 +75,6 @@ public class EmployeeController {
                 .name(employee.getName())
                 .token(token)
                 .build();
-
         return Result.success(employeeLoginVO);
     }
 
@@ -66,6 +83,7 @@ public class EmployeeController {
      *
      * @return
      */
+    @ApiOperation("员工退出")
     @PostMapping("/logout")
     public Result<String> logout() {
         return Result.success();
