@@ -35,6 +35,16 @@ public class EmployeeController {
     @Autowired
     private JwtProperties jwtProperties;
 
+
+    //    更改用户状态
+    @PostMapping("/status/{status}")
+    public Result updateStatus(@PathVariable Integer status, Long id) {
+        log.info("启用禁用员工账号：{},{}", status, id);
+        employeeService.updateStatus(status, id);
+        return Result.success();
+    }
+
+
     @ApiOperation("员工分页查询")
     @GetMapping("/page")
     public Result<PageResult> page(EmployeePageQueryDTO employeePageQueryDTO) {
