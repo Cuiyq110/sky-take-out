@@ -118,4 +118,18 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     }
 
+    /**
+     * 根据id查询员工
+     * @param id
+     * @return
+     */
+    @Override
+    public Employee getById(Long id) {
+
+       Employee employee = employeeMapper.SelectById(id);
+//       设置密码
+        employee.setPassword("*****");
+       return employee;
+    }
+
 }

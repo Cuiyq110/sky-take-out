@@ -1,6 +1,8 @@
 package com.sky.controller.admin;
 
+import com.fasterxml.jackson.databind.ser.Serializers;
 import com.sky.constant.JwtClaimsConstant;
+import com.sky.context.BaseContext;
 import com.sky.dto.EmployeeDTO;
 import com.sky.dto.EmployeeLoginDTO;
 import com.sky.dto.EmployeePageQueryDTO;
@@ -36,6 +38,24 @@ public class EmployeeController {
     private JwtProperties jwtProperties;
 
 
+
+
+
+    /**
+     * 根据id查询员工
+     * @param id
+     * @return
+     */
+    @ApiOperation("根据id查询员工")
+    @GetMapping("/{id}")
+    public Result<Employee> getById(@PathVariable Long id) {
+        log.info("根据id查询员工：{}", id);
+        Employee employee = employeeService.getById(id);
+        return Result.success(employee);
+    }
+
+
+    @ApiOperation("更改用状态")
     //    更改用户状态
     @PostMapping("/status/{status}")
     public Result updateStatus(@PathVariable Integer status, Long id) {

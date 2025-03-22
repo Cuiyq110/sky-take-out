@@ -24,4 +24,6 @@ public interface EmployeeService {
      * @param id
      */
     void updateStatus(Integer status, Long id);
+
+    Employee getById(Long id);
 }

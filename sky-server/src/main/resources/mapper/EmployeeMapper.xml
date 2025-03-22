@@ -37,5 +37,10 @@
 
     </select>
 
+    <select id="SelectById" resultType="com.sky.entity.Employee">
+        <include refid="commonSelect"/>
+        where id = #{id}
+    </select>
+
 
 </mapper>
