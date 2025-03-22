@@ -20,6 +20,7 @@
             <if test="phone != null">phone = #{phone},</if>
             <if test="sex != null">sex = #{sex},</if>
             <if test="idNumber != null">id_number = #{idNumber},</if>
+            <if test="updateTime != null">update_Time = #{updateTime},</if>
             <if test="status != null">status = #{status},</if>
             <if test="createUser != null">create_user = #{createUser},</if>
             <if test="updateUser != null">update_user = #{updateUser},</if>
