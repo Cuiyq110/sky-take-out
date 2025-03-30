@@ -1,15 +1,15 @@
 package com.sky.controller.admin;
 
+import com.github.pagehelper.Page;
 import com.sky.dto.DishDTO;
+import com.sky.dto.DishPageQueryDTO;
+import com.sky.result.PageResult;
 import com.sky.result.Result;
 import com.sky.service.DishService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -29,6 +29,15 @@ public class DishController {
 
     @Resource
     private DishService dishService;
+
+    @GetMapping("/page")
+    @ApiOperation("菜品分页查询")
+  public Result<PageResult> page(DishPageQueryDTO dishPageQueryDTO) {
+        log.info("菜品分页查询：{}", dishPageQueryDTO);
+         PageResult page = dishService.pageQuery1(dishPageQueryDTO);
+      return Result.success(page);
+  }
+
     /**
      * 新增菜品
      */

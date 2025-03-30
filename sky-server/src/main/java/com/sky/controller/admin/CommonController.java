@@ -32,6 +32,13 @@ public class CommonController {
     private AliOSSUtils aliOSSUtils;
 
 
+
+
+    /**
+     * 文件上传
+     * @param file
+     * @return
+     */
     @PostMapping("/upload")
     @ApiOperation("文件上传")
     public Result<String> upload(MultipartFile file)  {
