@@ -3,6 +3,7 @@ package com.sky.controller.admin;
 import com.sky.constant.MessageConstant;
 import com.sky.result.Result;
 import com.sky.utils.AliOSSUtils;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,7 +22,7 @@ import java.io.IOException;
  * @author: Cuiyq
  * @date: 2025/3/30 08:31
  */
-@ApiOperation("通用接口")
+@Api(tags = "菜品相关接口")
 @RestController
 @RequestMapping("/admin/common")
 @Slf4j
@@ -30,8 +31,9 @@ public class CommonController {
     @Resource
     private AliOSSUtils aliOSSUtils;
 
-    @ApiOperation("文件上传接口")
+
     @PostMapping("/upload")
+    @ApiOperation("文件上传")
     public Result<String> upload(MultipartFile file)  {
         log.info("开始文件上传接口");
         try
