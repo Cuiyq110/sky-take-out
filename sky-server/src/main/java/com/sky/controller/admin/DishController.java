@@ -1,6 +1,5 @@
 package com.sky.controller.admin;
 
-import com.google.common.util.concurrent.AtomicDouble;
 import com.sky.dto.DishDTO;
 import com.sky.dto.DishPageQueryDTO;
 import com.sky.result.PageResult;
@@ -32,10 +31,24 @@ public class DishController {
     @Resource
     private DishService dishService;
 
+    @ApiOperation("修改菜品")
+    @PutMapping
+    public Result update(@RequestBody DishDTO dishDTO) {
+        log.info("修改菜品: {}", dishDTO);
+//        dishService.update(dishDTO);
+        return Result.success();
+    }
 
-    @GetMapping("/id")
+
+
+    /**
+     * 根据id查询菜品
+     * @param id
+     * @return
+     */
+    @GetMapping("/{id}")
     @ApiOperation("根据id查询菜品")
-    public Result<DishVO> getById(@RequestParam Long id) {
+    public Result<DishVO> getById(@PathVariable Long id) {
         log.info("根据id查询菜品：{}", id);
         // TODO 如果id为空，或者不存在返回异常
         DishVO dishVO = dishService.getByIdWithFlavor(id);
