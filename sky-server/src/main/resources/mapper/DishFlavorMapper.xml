@@ -25,6 +25,15 @@
         <include refid="commonSelect"/>
         where id = #{id}
     </select>
+    <select id="getByDishId" resultType="com.sky.entity.DishFlavor">
+        <include refid="commonSelect"/>
+        <where>
+            <if test="dishId != null">
+                and dish_id = #{dishId}
+            </if>
+        </where>
+    </select>
+
 
 
 </mapper>
