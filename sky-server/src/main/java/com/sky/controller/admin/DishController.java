@@ -35,7 +35,7 @@ public class DishController {
     @PutMapping
     public Result update(@RequestBody DishDTO dishDTO) {
         log.info("修改菜品: {}", dishDTO);
-//        dishService.update(dishDTO);
+        dishService.update(dishDTO);
         return Result.success();
     }
 

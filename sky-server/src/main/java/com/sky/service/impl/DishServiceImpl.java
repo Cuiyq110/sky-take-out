@@ -23,6 +23,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
 
@@ -135,5 +137,40 @@ public class DishServiceImpl implements DishService {
         BeanUtils.copyProperties(dish,dishVO);
         dishVO.setFlavors(dishFlavorList);
         return dishVO;
+    }
+
+    /**
+     * 修改菜品
+     * @param dishDTO
+     */
+    @Override
+
+    public void update(DishDTO dishDTO) {
+        Dish dish = new Dish();
+        BeanUtils.copyProperties(dishDTO,dish);
+//       修改菜品属性
+        dishMapper.update(dish);
+        /**
+         * 删除当前菜品对应的口味数据，重新添加
+         */
+
+        //获得菜品id
+        Long dishId = dishDTO.getId();
+        List<Long> dishIdList = Collections.singletonList(dishId);
+//        删除菜品对应的口味数据
+        dishFlavorMapper.deleteByDishIds(dishIdList);
+
+        // 判断 flavors 是否非空
+        List<DishFlavor> flavors = dishDTO.getFlavors();
+        if (dishDTO.getFlavors() != null && !dishDTO.getFlavors().isEmpty()) {
+
+            dishDTO.getFlavors().forEach(dishFlavor -> {
+                dishFlavor.setDishId(dishId);
+            });
+            // 批量插入新的口味数据
+            dishFlavorMapper.insertBatch(flavors);
+        }
+
+//
     }
 }
