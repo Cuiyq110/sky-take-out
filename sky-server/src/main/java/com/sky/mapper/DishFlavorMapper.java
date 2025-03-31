@@ -19,4 +19,5 @@ public interface DishFlavorMapper {
 //    批量插入数据
     void insertBatch(List<DishFlavor> dishFlavorList);
 
+    void deleteByDishIds(List<Long> ids);
 }
